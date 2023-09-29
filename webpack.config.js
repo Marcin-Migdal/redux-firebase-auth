@@ -8,6 +8,10 @@ module.exports = {
         publicPath: "/",
     },
 
+    devServer: {
+        historyApiFallback: true,
+    },
+
     plugins: [
         new HTMLWebpackPlugin({
             template: "./src/index.html",
