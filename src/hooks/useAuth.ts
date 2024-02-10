@@ -35,11 +35,11 @@ export const useAuth = (): IUseAuth => {
     useEffect(() => {
         const unSubscribe = onAuthStateChanged(fb.auth.auth, (user) => {
             if (authUser !== user) setAuthUser(user);
-            setIsLoading(false);
+            isLoading && setIsLoading(false);
         });
 
         return unSubscribe;
-    }, [authUser]);
+    }, []);
 
     const handleGoogleSignIn = async (language: LanguageTypes) => {
         try {
