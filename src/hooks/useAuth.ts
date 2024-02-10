@@ -39,7 +39,7 @@ export const useAuth = (): IUseAuth => {
         });
 
         return unSubscribe;
-    }, []);
+    }, [authUser]);
 
     const handleGoogleSignIn = async (language: LanguageTypes) => {
         try {
