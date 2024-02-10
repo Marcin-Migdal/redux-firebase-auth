@@ -1,80 +1,108 @@
-import React, { ChangeEvent, useState } from "react";
+import { Button, Card, Col, Form, Icon, Input, Row } from "@Marcin-Migdal/morti-component-library";
+import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
+import React from "react";
 
-import { handleGoogleSignIn as _handleGoogleSignIn, handleSignUpWithEmailAndPassword } from "../../service/auth";
-import { CustomFormData } from "../../components";
-import { Link } from "react-router-dom";
+import { ISignUpState, signUpInitialValues, signUpValidationSchema } from "./sign-up-formik-config";
+import { useFormErrors } from "../../hooks";
+import { useApp } from "../../context/app-context";
 
-interface SignUpFormData {
-    userName?: string;
-    email?: string;
-    password?: string;
-}
+import "../../commonAssets/css/auth-form.css";
 
-export const SignUp = () => {
-    const [formData, setFormData] = useState<SignUpFormData | undefined>(undefined);
+const SignUp = () => {
+    const navigate = useNavigate();
+    const { t } = useTranslation(["auth", "common"]);
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
+    const { toastRef, handleSignUp, handleGoogleSignIn, isLoading } = useApp();
+    const { formErrors, handleFormErrorChange, handleFormError } = useFormErrors<ISignUpState>({ toastRef });
 
+    const handleSubmit = async (values) => {
         try {
-            await handleSignUpWithEmailAndPassword(formData, "pl");
+            await handleSignUp(values, "pl");
         } catch (error) {
-            // handling errors
+            handleFormError(error);
         }
     };
 
-    const handleGoogleSignIn = async () => {
+    const onGoogleSignIn = async () => {
         try {
-            await _handleGoogleSignIn("pl");
+            await handleGoogleSignIn("pl");
         } catch (error) {
-            // handling errors
+            handleFormError(error);
         }
-    };
-
-    const changeFormDataState = (e: ChangeEvent<HTMLInputElement>) => {
-        const { value, name } = e.target;
-        setFormData((prevState) => ({ ...prevState, [name]: value }));
     };
 
     return (
-        <div>
-            <h2>Sign up</h2>
-            <CustomFormData onSubmit={handleSubmit}>
-                <div>
-                    <label>Username</label>
-                    <input
-                        type="text"
-                        name="userName"
-                        placeholder="Username"
-                        onChange={changeFormDataState}
-                        value={formData?.userName || ""}
-                    />
-                </div>
-                <div>
-                    <label>Email</label>
-                    <input type="email" name="email" placeholder="Email" onChange={changeFormDataState} value={formData?.email || ""} />
-                </div>
-                <div>
-                    <label>Password</label>
-                    <input
-                        autoComplete="on"
-                        type="password"
-                        name="password"
-                        placeholder="Password"
-                        onChange={changeFormDataState}
-                        value={formData?.password || ""}
-                    />
-                </div>
-                <div>
-                    <Link to="/sign-in">
-                        <button type="button">Sign in</button>
-                    </Link>
-                    <button>Sign up</button>
-                </div>
-                <button type="button" onClick={handleGoogleSignIn}>
-                    Sign in with Google
-                </button>
-            </CustomFormData>
+        <div className="auth-from-container">
+            <Card className="auth-card">
+                <Row>
+                    <Col xl={6} className="auth-form-container">
+                        <h2>{t("common:Hello")}!</h2>
+                        <p>{t("Please sign up to continue")}</p>
+                        <Form<ISignUpState>
+                            initialValues={signUpInitialValues}
+                            validationSchema={signUpValidationSchema}
+                            onSubmit={handleSubmit}
+                            externalErrors={formErrors}
+                            onExternalErrorChange={handleFormErrorChange}
+                        >
+                            {({ values, errors, handleBlur, handleChange, isValid }) => (
+                                <>
+                                    <Input
+                                        label={t("Username")}
+                                        name="userName"
+                                        value={values.userName}
+                                        error={errors.userName}
+                                        onChange={handleChange}
+                                        onBlur={handleBlur}
+                                    />
+                                    <Input
+                                        label={t("Email")}
+                                        name="email"
+                                        value={values.email}
+                                        error={errors.email}
+                                        onChange={handleChange}
+                                        onBlur={handleBlur}
+                                    />
+                                    <Input
+                                        label={t("Password")}
+                                        name="password"
+                                        value={values.password}
+                                        error={errors.password}
+                                        onChange={handleChange}
+                                        onBlur={handleBlur}
+                                        type="password"
+                                    />
+                                    <Input
+                                        label={t("Verify password")}
+                                        name="verifyPassword"
+                                        value={values.verifyPassword}
+                                        error={errors.verifyPassword}
+                                        onChange={handleChange}
+                                        onBlur={handleBlur}
+                                        type="password"
+                                    />
+                                    <Button text={t("Sign up")} type="submit" variant="full" disabled={!isValid} busy={isLoading} />
+                                </>
+                            )}
+                        </Form>
+                        <div className="bottom-section">
+                            <span>
+                                {t("common:or")} <br /> {t("Sign up with")}
+                            </span>
+                            <Icon className="google-sign-up-icon" icon={["fab", "google"]} onClick={onGoogleSignIn} />
+                        </div>
+                    </Col>
+                    <Col xl={6} className="sign-up-button-container">
+                        <Icon className="google-sign-up-icon" icon={["fas", "rectangle-list"]} />
+                        <h2>APP NAME</h2>
+                        <p>{t("Already have any account?")}</p>
+                        <Button text={t("Sign in")} variant="full" onClick={() => navigate("/sign-in")} />
+                    </Col>
+                </Row>
+            </Card>
         </div>
     );
 };
+
+export default SignUp;

@@ -1,0 +1,35 @@
+interface IErrorObj {
+    [key: string]: { message: string; code: string; fieldNames?: string | string[] } | undefined;
+}
+
+export const authErrors: IErrorObj = {
+    "auth/invalid-login-credentials": {
+        message: "Invalid credentials",
+        code: "auth/invalid-login-credentials",
+        fieldNames: ["email", "password"],
+    },
+    "auth/user-not-found": {
+        message: "Email not found",
+        code: "auth/user-not-found",
+        fieldNames: "email",
+    },
+    "auth/wrong-password": {
+        message: "Wrong password",
+        code: "auth/wrong-password",
+        fieldNames: "password",
+    },
+    "auth/username-already-in-use": {
+        message: "Wrong password",
+        code: "auth/username-already-in-use",
+        fieldNames: "userName",
+    },
+    "auth/email-already-in-use": {
+        message: "Wrong password",
+        code: "auth/email-already-in-use",
+        fieldNames: "email",
+    },
+    "auth/too-many-requests": {
+        message: "Access to this account has been temporarily disabled due to many failed login attempts. You can try again later.",
+        code: "auth/email-already-in-use",
+    },
+};

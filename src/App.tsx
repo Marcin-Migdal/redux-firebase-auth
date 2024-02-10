@@ -1,23 +1,33 @@
-import { Navigate, Route, Routes } from "react-router-dom";
-import React from "react";
+import { RouterProvider } from "react-router-dom";
 
-import { HomePage, SignIn, SignUp } from "./pages";
+import { ToastHandler, ToastsContainer } from "@Marcin-Migdal/morti-component-library";
+import { AppContextProvider } from "./context/app-context";
+import { useAuth } from "./hooks";
+import { useRef } from "react";
+import router from "./pages";
 
 import "./App.css";
 
-//! TODO add MortiFormData
-//! TODO add MortiToast
-//! TODO add MortiModal
+//? SOBOTA
+//! zmienić importy, żeby były skrócone w ts-config, wcześniej poczytać czy jest to dobra praktyka
+//! zrobić research, redux saga czy redux slices
+//! zaimplementować wybrane podejście do redux'a
 
-export const App = () => {
+//? LAST
+//! add e2e tests
+
+function App() {
+    const toastRef = useRef<ToastHandler>(null);
+    const auth = useAuth();
+
     return (
-        <div className="app-container">
-            <Routes>
-                <Route path="/" element={<HomePage />} />
-                <Route path="/sign-in" element={<SignIn />} />
-                <Route path="/sign-up" element={<SignUp />} />
-                <Route path="*" element={<Navigate to="/" />} />
-            </Routes>
-        </div>
+        <>
+            <ToastsContainer ref={toastRef} />
+            <AppContextProvider toastRef={toastRef} auth={auth}>
+                <RouterProvider router={router} />
+            </AppContextProvider>
+        </>
     );
-};
+}
+
+export default App;
