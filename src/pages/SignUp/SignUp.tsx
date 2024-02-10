@@ -5,7 +5,6 @@ import React from "react";
 
 import { ISignUpState, signUpInitialValues, signUpValidationSchema } from "./sign-up-formik-config";
 import { useFormErrors } from "../../hooks";
-import { useApp } from "../../context/app-context";
 
 import "../../commonAssets/css/auth-form.css";
 
@@ -13,12 +12,11 @@ const SignUp = () => {
     const navigate = useNavigate();
     const { t } = useTranslation(["auth", "common"]);
 
-    const { toastRef, handleSignUp, handleGoogleSignIn, isLoading } = useApp();
-    const { formErrors, handleFormErrorChange, handleFormError } = useFormErrors<ISignUpState>({ toastRef });
+    const { formErrors, handleFormErrorChange, handleFormError } = useFormErrors<ISignUpState>({});
 
     const handleSubmit = async (values) => {
         try {
-            await handleSignUp(values, "pl");
+            // await handleSignUp(values, "pl");
         } catch (error) {
             handleFormError(error);
         }
@@ -26,7 +24,7 @@ const SignUp = () => {
 
     const onGoogleSignIn = async () => {
         try {
-            await handleGoogleSignIn("pl");
+            // await handleGoogleSignIn("pl");
         } catch (error) {
             handleFormError(error);
         }
@@ -82,7 +80,8 @@ const SignUp = () => {
                                         onBlur={handleBlur}
                                         type="password"
                                     />
-                                    <Button text={t("Sign up")} type="submit" variant="full" disabled={!isValid} busy={isLoading} />
+                                    <Button text={t("Sign up")} type="submit" variant="full" disabled={!isValid} />
+                                    {/* <Button text={t("Sign up")} type="submit" variant="full" disabled={!isValid} busy={isLoading} /> */}
                                 </>
                             )}
                         </Form>

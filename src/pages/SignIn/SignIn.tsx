@@ -4,22 +4,24 @@ import { useTranslation } from "react-i18next";
 import React from "react";
 
 import { ISignInState, signInInitialValues, signInValidationSchema } from "./sign-in-formik-config";
-import { useApp } from "../../context/app-context";
-import { useFormErrors } from "../../hooks";
+import { useAppDispatch, useAppSelector, useFormErrors } from "../../hooks";
+import { signInWithEmail } from "../../slices/auth-user-slice";
 
 import "../../commonAssets/css/auth-form.css";
 
 const SignIn = () => {
+    const { isLoading } = useAppSelector((store) => store.authUser);
+    const dispatch = useAppDispatch();
+
     const { t } = useTranslation(["auth", "common"]);
 
     const navigate = useNavigate();
 
-    const { toastRef, handleSignInWithEmail, handleGoogleSignIn, isLoading } = useApp();
-    const { formErrors, handleFormErrorChange, handleFormError } = useFormErrors<ISignInState>({ toastRef });
+    const { formErrors, handleFormErrorChange, handleFormError } = useFormErrors<ISignInState>({});
 
     const handleSubmit = async (values: ISignInState) => {
         try {
-            await handleSignInWithEmail(values);
+            dispatch(signInWithEmail(values));
         } catch (error) {
             handleFormError(error);
         }
@@ -27,7 +29,7 @@ const SignIn = () => {
 
     const onGoogleSignIn = async () => {
         try {
-            await handleGoogleSignIn("pl");
+            // await handleGoogleSignIn("pl");
         } catch (error) {
             handleFormError(error);
         }

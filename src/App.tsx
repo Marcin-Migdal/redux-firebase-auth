@@ -1,8 +1,6 @@
 import { RouterProvider } from "react-router-dom";
 
 import { ToastHandler, ToastsContainer } from "@Marcin-Migdal/morti-component-library";
-import { AppContextProvider } from "./context/app-context";
-import { useAuth } from "./hooks";
 import { useRef } from "react";
 import router from "./pages";
 
@@ -17,15 +15,12 @@ import "./App.css";
 //! add e2e tests
 
 function App() {
-    const toastRef = useRef<ToastHandler>(null);
-    const auth = useAuth();
+    // const toastRef = useRef<ToastHandler>(null);
 
     return (
         <>
-            <ToastsContainer ref={toastRef} />
-            <AppContextProvider toastRef={toastRef} auth={auth}>
-                <RouterProvider router={router} />
-            </AppContextProvider>
+            {/* <ToastsContainer ref={toastRef} /> */}
+            <RouterProvider router={router} />
         </>
     );
 }

@@ -12,6 +12,7 @@
     "license": "ISC",
     "dependencies": {
         "@Marcin-Migdal/morti-component-library": "^0.1.78",
+        "@reduxjs/toolkit": "^2.1.0",
         "firebase": "^10.4.0",
         "i18next": "^23.8.2",
         "i18next-browser-languagedetector": "^7.2.0",
@@ -19,6 +20,7 @@
         "react": "^18.2.0",
         "react-dom": "^18.2.0",
         "react-i18next": "^14.0.5",
+        "react-redux": "^9.1.0",
         "react-router-dom": "^6.16.0",
         "typescript": "^4.9.5"
     },
