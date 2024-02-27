@@ -4,9 +4,17 @@
         "module": "commonjs",
         "strictNullChecks": true,
         "esModuleInterop": true,
-        "jsx": "react-jsx"
+        "jsx": "react-jsx",
+        "baseUrl": "./src",
+        "paths": {
+            "@components/*": ["./components/*"],
+            "@pages/*": ["./pages/*"],
+            "@hooks/*": ["./hooks/*"],
+            "@utils/*": ["./utils/*"],
+            "@slices/*": ["./slices/*"],
+            "@firebase/*": ["./firebase/*"],
+            "@commonAssets/*": ["./commonAssets/*"]
+        }
     },
-    "include": [
-        "src"
-    ]
+    "include": ["src"]
 }
