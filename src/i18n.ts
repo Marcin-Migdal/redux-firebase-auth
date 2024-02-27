@@ -12,9 +12,14 @@ i18n
     .use(initReactI18next)
     // init i18next, for all options read: https://www.i18next.com/overview/configuration-options
     .init({
-        debug: true,
+        // lng: "pl", // for tests
+        // lng: "en", // for tests
+        debug: false,
         fallbackLng: "en",
+        fallbackNS: "common",
         interpolation: { escapeValue: false },
+        ns: ["common", "auth"],
+        defaultNS: "common",
     });
 
 export default i18n;

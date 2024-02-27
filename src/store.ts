@@ -1,10 +1,21 @@
 import { configureStore } from "@reduxjs/toolkit";
-import authUserReducer from "./slices/auth-user-slice";
+
+import { authorizationReducer, toastReducer } from "@slices/index";
 
 const store = configureStore({
     reducer: {
-        authUser: authUserReducer,
+        authorization: authorizationReducer,
+        toast: toastReducer,
     },
+    middleware: (getDefaultMiddleware) =>
+        getDefaultMiddleware({
+            serializableCheck: {
+                // Ignore these action types
+                ignoredActions: ["toast/setToastHandler"],
+                // Ignore these paths in the state
+                ignoredPaths: ["toast.toastHandler"],
+            },
+        }),
 });
 
 export default store;

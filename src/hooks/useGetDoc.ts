@@ -1,14 +1,14 @@
 import { getDocs, query, collection, QueryConstraint, QueryDocumentSnapshot, DocumentData, QuerySnapshot } from "firebase/firestore";
+import { ToastHandler } from "@Marcin-Migdal/morti-component-library";
 import { useEffect, useState } from "react";
 
-import { ToastRefType } from "../context/app-context";
-import { DOCUMENTS } from "../utils/enums/documents";
-import { fb } from "../firebase/firebase";
+import { DOCUMENTS } from "@utils/enums";
+import { fb } from "@firebase/firebase";
 
 interface IUseGetDoc {
     document: DOCUMENTS;
     queryConstraints?: QueryConstraint[];
-    toastRef?: ToastRefType;
+    toastHandler: ToastHandler | null;
 }
 
 interface IData<T extends DocumentData> {
@@ -19,7 +19,7 @@ interface IData<T extends DocumentData> {
 
 type DataStatusTypes = "init" | "loaded" | "loading" | "error";
 
-export const useGetDoc = <T extends DocumentData>({ document, queryConstraints = [], toastRef }: IUseGetDoc) => {
+export const useGetDoc = <T extends DocumentData>({ document, queryConstraints = [], toastHandler }: IUseGetDoc) => {
     const [data, setData] = useState<IData<T>>({
         doc: [],
         querySnapshot: undefined,
@@ -41,7 +41,7 @@ export const useGetDoc = <T extends DocumentData>({ document, queryConstraints =
             });
         } catch (error) {
             setData((prev) => ({ ...prev, status: "error" }));
-            toastRef?.current?.addToast("failure", error.message);
+            toastHandler?.addToast({ type: "failure", message: error.message });
         }
     };
 

@@ -1,5 +1,21 @@
-interface IErrorObj {
-    [key: string]: { message: string; code: string; fieldNames?: string | string[] } | undefined;
+type IErrorObj = {
+    [key in ErrorCodeTypes]: IError | undefined;
+};
+
+type ErrorCodeTypes =
+    | "auth/invalid-login-credentials"
+    | "auth/user-not-found"
+    | "auth/wrong-password"
+    | "auth/username-already-in-use"
+    | "auth/email-already-in-use"
+    | "auth/invalid-email"
+    | "auth/too-many-requests"
+    | "unknown_error-occurred";
+
+export interface IError {
+    message: string;
+    code: string;
+    fieldNames?: string | string[];
 }
 
 export const authErrors: IErrorObj = {
@@ -19,17 +35,26 @@ export const authErrors: IErrorObj = {
         fieldNames: "password",
     },
     "auth/username-already-in-use": {
-        message: "Wrong password",
+        message: "Username already in use",
         code: "auth/username-already-in-use",
         fieldNames: "userName",
     },
     "auth/email-already-in-use": {
-        message: "Wrong password",
+        message: "Email already in use",
         code: "auth/email-already-in-use",
+        fieldNames: "email",
+    },
+    "auth/invalid-email": {
+        message: "Invalid email",
+        code: "auth/invalid-email",
         fieldNames: "email",
     },
     "auth/too-many-requests": {
         message: "Access to this account has been temporarily disabled due to many failed login attempts. You can try again later.",
-        code: "auth/email-already-in-use",
+        code: "auth/too-many-requests",
+    },
+    "unknown_error-occurred": {
+        message: "Error has occurred, please try again",
+        code: "unknown_error-occurred",
     },
 };

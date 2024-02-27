@@ -1,38 +1,33 @@
-import { Button, Card, Col, Form, Icon, Input, Row } from "@Marcin-Migdal/morti-component-library";
+import { Card, Col, Form, FormErrorsType, Icon, Row } from "@Marcin-Migdal/morti-component-library";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import React from "react";
 
 import { ISignInState, signInInitialValues, signInValidationSchema } from "./sign-in-formik-config";
-import { useAppDispatch, useAppSelector, useFormErrors } from "../../hooks";
-import { signInWithEmail } from "../../slices/auth-user-slice";
+import { setAuthError, signInWithEmail, signInWithGoogle } from "@slices/authorization-slice";
+import { useAppDispatch, useAppSelector } from "@hooks/redux-hooks";
+import { CustomButton, CustomInput } from "@components/index";
+import { PATH_CONSTRANTS } from "@utils/enums";
 
-import "../../commonAssets/css/auth-form.css";
+import "@commonAssets/css/auth-form.css";
 
+const nameSpace: string = "auth";
 const SignIn = () => {
-    const { isLoading } = useAppSelector((store) => store.authUser);
-    const dispatch = useAppDispatch();
-
-    const { t } = useTranslation(["auth", "common"]);
-
+    const { t, i18n } = useTranslation([nameSpace]);
     const navigate = useNavigate();
 
-    const { formErrors, handleFormErrorChange, handleFormError } = useFormErrors<ISignInState>({});
+    const { isLoading, authFormErrors: authErrors } = useAppSelector((store) => store.authorization);
+    const dispatch = useAppDispatch();
 
-    const handleSubmit = async (values: ISignInState) => {
-        try {
-            dispatch(signInWithEmail(values));
-        } catch (error) {
-            handleFormError(error);
-        }
-    };
+    const handleSubmit = async (values: ISignInState) => dispatch(signInWithEmail({ ...values, t: t }));
 
-    const onGoogleSignIn = async () => {
-        try {
-            // await handleGoogleSignIn("pl");
-        } catch (error) {
-            handleFormError(error);
-        }
+    const onGoogleSignIn = async () => dispatch(signInWithGoogle({ language: i18n.language, t: t }));
+
+    const handleAuthErrorChange = (authError: FormErrorsType<ISignInState>) => dispatch(setAuthError(authError));
+
+    const handleNavigate = (to: PATH_CONSTRANTS) => {
+        dispatch(setAuthError({}));
+        navigate(to);
     };
 
     return (
@@ -40,27 +35,29 @@ const SignIn = () => {
             <Card className="auth-card">
                 <Row>
                     <Col xl={6} className="auth-form-container">
-                        <h2>{t("common:Hello")}!</h2>
+                        <h2>{t("_Hello")}!</h2>
                         <p>{t("Please sign in to continue")}</p>
                         <Form<ISignInState>
                             initialValues={signInInitialValues}
                             onSubmit={handleSubmit}
                             validationSchema={signInValidationSchema}
-                            externalErrors={formErrors}
-                            onExternalErrorChange={handleFormErrorChange}
+                            externalErrors={authErrors}
+                            onExternalErrorChange={handleAuthErrorChange}
                         >
                             {({ values, errors, handleChange, handleBlur, isValid }) => (
                                 <>
-                                    <Input
-                                        label={t("Email")}
+                                    <CustomInput
+                                        i18NameSpace={nameSpace}
+                                        label="Email"
                                         name="email"
                                         onChange={handleChange}
                                         onBlur={handleBlur}
                                         value={values.email}
                                         error={errors.email}
                                     />
-                                    <Input
-                                        label={t("Password")}
+                                    <CustomInput
+                                        i18NameSpace={nameSpace}
+                                        label="Password"
                                         name="password"
                                         onChange={handleChange}
                                         onBlur={handleBlur}
@@ -68,22 +65,34 @@ const SignIn = () => {
                                         error={errors.password}
                                         type="password"
                                     />
-                                    <Button text={t("Sign in")} type="submit" variant="full" disabled={!isValid} busy={isLoading} />
+                                    <CustomButton
+                                        i18NameSpace={nameSpace}
+                                        text="Sign in"
+                                        type="submit"
+                                        variant="full"
+                                        disabled={!isValid}
+                                        busy={isLoading}
+                                    />
                                 </>
                             )}
                         </Form>
                         <div className="bottom-section">
                             <span>
-                                {t("common:or")} <br /> {t("Sign up with")}
+                                {t("_or")} <br /> {t("Sign up with")}
                             </span>
                             <Icon className="google-sign-up-icon" icon={["fab", "google"]} onClick={onGoogleSignIn} />
                         </div>
                     </Col>
                     <Col xl={6} className="sign-up-button-container">
                         <Icon className="google-sign-up-icon" icon={["fas", "rectangle-list"]} />
-                        <h2>{t("APP NAME")}</h2>
+                        <h2>APP NAME</h2>
                         <p>{t("Don't have any account?")}</p>
-                        <Button text={t("Sign up")} variant="full" onClick={() => navigate("/sign-up")} />
+                        <CustomButton
+                            i18NameSpace={nameSpace}
+                            text="Sign up"
+                            variant="full"
+                            onClick={() => handleNavigate(PATH_CONSTRANTS.SIGN_UP)}
+                        />
                     </Col>
                 </Row>
             </Card>

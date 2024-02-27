@@ -1,5 +1,5 @@
 import { ThemeWrapper } from "@Marcin-Migdal/morti-component-library";
-import { Loader } from "./components/Layout/Loader";
+import { Loader } from "./components/Loader/Loader";
 import { createRoot } from "react-dom/client";
 import React, { Suspense } from "react";
 import { Provider } from "react-redux";
@@ -9,7 +9,6 @@ import store from "./store";
 import App from "./App";
 
 // css files
-import "./commonAssets/css/page";
 import "./index.css";
 
 // translation config
