@@ -34,9 +34,9 @@ const SignIn = () => {
         <div className="auth-from-container">
             <Card className="auth-card">
                 <Row>
-                    <Col xl={6} className="auth-form-container">
+                    <Col xl={6} className="left-col">
                         <h2>{t("_Hello")}!</h2>
-                        <p>{t("Please sign in to continue")}</p>
+                        <p data-cy="sign-in-description">{t("Please sign in to continue")}</p>
                         <Form<ISignInState>
                             initialValues={signInInitialValues}
                             onSubmit={handleSubmit}
@@ -47,6 +47,7 @@ const SignIn = () => {
                             {({ values, errors, handleChange, handleBlur, isValid }) => (
                                 <>
                                     <CustomInput
+                                        data-cy="email-input"
                                         i18NameSpace={nameSpace}
                                         label="Email"
                                         name="email"
@@ -56,6 +57,7 @@ const SignIn = () => {
                                         error={errors.email}
                                     />
                                     <CustomInput
+                                        data-cy="password-input"
                                         i18NameSpace={nameSpace}
                                         label="Password"
                                         name="password"
@@ -66,6 +68,7 @@ const SignIn = () => {
                                         type="password"
                                     />
                                     <CustomButton
+                                        data-cy="sign-in-submit-btn"
                                         i18NameSpace={nameSpace}
                                         text="Sign in"
                                         type="submit"
@@ -80,14 +83,15 @@ const SignIn = () => {
                             <span>
                                 {t("_or")} <br /> {t("Sign up with")}
                             </span>
-                            <Icon className="google-sign-up-icon" icon={["fab", "google"]} onClick={onGoogleSignIn} />
+                            <Icon className="google-sign-in-icon" icon={["fab", "google"]} onClick={onGoogleSignIn} />
                         </div>
                     </Col>
-                    <Col xl={6} className="sign-up-button-container">
-                        <Icon className="google-sign-up-icon" icon={["fas", "rectangle-list"]} />
+                    <Col xl={6} className="right-col">
+                        <Icon icon={["fas", "rectangle-list"]} />
                         <h2>APP NAME</h2>
                         <p>{t("Don't have any account?")}</p>
                         <CustomButton
+                            data-cy="go-to-sign-up-btn"
                             i18NameSpace={nameSpace}
                             text="Sign up"
                             variant="full"

@@ -15,7 +15,7 @@ const Home = () => {
     return (
         <div>
             <p>Home</p>
-            <Button text="Sign out" onClick={handleSignOut} />
+            <Button data-cy="sign-out-btn" text="Sign out" onClick={handleSignOut} />
         </div>
     );
 };
