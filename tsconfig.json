@@ -16,5 +16,5 @@
             "@commonAssets/*": ["./commonAssets/*"]
         }
     },
-    "include": ["src"]
+    "include": ["cypress", "src"]
 }

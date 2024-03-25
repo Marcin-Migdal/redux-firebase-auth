@@ -34,9 +34,9 @@ const SignUp = () => {
         <div className="auth-from-container">
             <Card className="auth-card">
                 <Row>
-                    <Col xl={6} className="auth-form-container">
+                    <Col xl={6} className="left-col">
                         <h2>{t("_Hello")}!</h2>
-                        <p>{t("Please sign up to continue")}</p>
+                        <p data-cy="sign-up-description">{t("Please sign up to continue")}</p>
                         <Form<ISignUpState>
                             initialValues={signUpInitialValues}
                             validationSchema={signUpValidationSchema}
@@ -47,6 +47,7 @@ const SignUp = () => {
                             {({ values, errors, handleBlur, handleChange, isValid }) => (
                                 <>
                                     <CustomInput
+                                        data-cy="userName-input"
                                         i18NameSpace={nameSpace}
                                         label="Username"
                                         name="userName"
@@ -56,6 +57,7 @@ const SignUp = () => {
                                         onBlur={handleBlur}
                                     />
                                     <CustomInput
+                                        data-cy="email-input"
                                         i18NameSpace={nameSpace}
                                         label="Email"
                                         name="email"
@@ -65,6 +67,7 @@ const SignUp = () => {
                                         onBlur={handleBlur}
                                     />
                                     <CustomInput
+                                        data-cy="password-input"
                                         i18NameSpace={nameSpace}
                                         label="Password"
                                         name="password"
@@ -75,6 +78,7 @@ const SignUp = () => {
                                         type="password"
                                     />
                                     <CustomInput
+                                        data-cy="validate-password-input"
                                         i18NameSpace={nameSpace}
                                         label="Verify password"
                                         name="verifyPassword"
@@ -85,6 +89,7 @@ const SignUp = () => {
                                         type="password"
                                     />
                                     <CustomButton
+                                        data-cy="sign-up-submit-btn"
                                         i18NameSpace={nameSpace}
                                         text="Sign up"
                                         type="submit"
@@ -99,14 +104,15 @@ const SignUp = () => {
                             <span>
                                 {t("_or")} <br /> {t("Sign up with")}
                             </span>
-                            <Icon className="google-sign-up-icon" icon={["fab", "google"]} onClick={onGoogleSignIn} />
+                            <Icon className="google-sign-in-icon" icon={["fab", "google"]} onClick={onGoogleSignIn} />
                         </div>
                     </Col>
-                    <Col xl={6} className="sign-up-button-container">
-                        <Icon className="google-sign-up-icon" icon={["fas", "rectangle-list"]} />
+                    <Col xl={6} className="right-col">
+                        <Icon icon={["fas", "rectangle-list"]} />
                         <h2>APP NAME</h2>
                         <p>{t("Already have any account?")}</p>
                         <CustomButton
+                            data-cy="go-to-sign-in-btn"
                             i18NameSpace={nameSpace}
                             text="Sign in"
                             variant="full"

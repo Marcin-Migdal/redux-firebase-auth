@@ -4,9 +4,8 @@ import React from "react";
 
 type CustomButtonPropsType = IButtonProps & { i18NameSpace?: string };
 
-export const CustomButton = (props: CustomButtonPropsType) => {
-    const { i18NameSpace, text } = props;
+export const CustomButton = ({ i18NameSpace, text, ...otherProps }: CustomButtonPropsType) => {
     const { t } = useTranslation(i18NameSpace);
 
-    return <Button {...props} text={t(text)} />;
+    return <Button {...otherProps} text={t(text)} />;
 };

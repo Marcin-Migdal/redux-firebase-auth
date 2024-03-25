@@ -4,13 +4,18 @@ import React from "react";
 
 type CustomInputPropsType = InputProps & { i18NameSpace?: string };
 
-export const CustomInput = (props: CustomInputPropsType) => {
-    const { i18NameSpace, label = undefined, placeholder = undefined, error = undefined } = props;
+export const CustomInput = ({
+    i18NameSpace,
+    label = undefined,
+    placeholder = undefined,
+    error = undefined,
+    ...otherProps
+}: CustomInputPropsType) => {
     const { t } = useTranslation(i18NameSpace);
 
     return (
         <Input
-            {...props}
+            {...otherProps}
             label={label ? t(label) : undefined}
             placeholder={placeholder ? t(placeholder) : undefined}
             error={error ? t(error) : undefined}
